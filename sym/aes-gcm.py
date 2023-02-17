@@ -2,7 +2,6 @@
 # https://csrc.nist.rip/groups/ST/toolkit/BCM/documents/proposedmodes/gcm/gcm-spec.pdf
 # test case 15
 from Crypto.Cipher import AES
-from Crypto.Random import get_random_bytes
 
 VAR_PATH = "./var/"
 
