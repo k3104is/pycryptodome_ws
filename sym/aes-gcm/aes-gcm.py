@@ -1,4 +1,5 @@
 # https://telecom-engineer.blog/blog/2022/05/06/python-aes-gcm/
+# https://pycryptodome.readthedocs.io/en/latest/src/cipher/modern.html#ccm-mode
 # https://csrc.nist.rip/groups/ST/toolkit/BCM/documents/proposedmodes/gcm/gcm-spec.pdf
 # test case 15
 from Crypto.Cipher import AES

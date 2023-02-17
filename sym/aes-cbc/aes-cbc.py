@@ -1,6 +1,4 @@
-# https://telecom-engineer.blog/blog/2022/05/06/python-aes-gcm/
-# https://csrc.nist.rip/groups/ST/toolkit/BCM/documents/proposedmodes/gcm/gcm-spec.pdf
-# test case 15
+# https://pycryptodome.readthedocs.io/en/latest/src/cipher/classic.html#cbc-mode
 from Crypto.Cipher import AES
 
 VAR_PATH = "./var/"
