@@ -15,8 +15,8 @@ def main():
     data = bytearray.fromhex(fd.read())
 
   # aes-gcm256
-  ciphertext, mac = aes_gcm_encrypt(key,iv,data)
-  plaintext = aes_gcm_decrypt(key,iv,ciphertext,mac)
+  ciphertext, mac = aes_gcm_encrypt(key, iv, data)
+  plaintext = aes_gcm_decrypt(key, iv, ciphertext, mac)
 
   # result
   print("data\t\t:" + data.hex())
@@ -27,17 +27,17 @@ def main():
   print("decrypted\t:" + plaintext.hex())
 
 # encrypt
-def aes_gcm_encrypt(key,iv,text):
+def aes_gcm_encrypt(key, iv, text):
   cipher = AES.new(key, AES.MODE_GCM, iv)
   ciphertext, mac = cipher.encrypt_and_digest(text)
   return ciphertext, mac
 
 # decrypt
-def aes_gcm_decrypt(key,iv,ciphertext,mac):
+def aes_gcm_decrypt(key, iv, ciphertext, mac):
   plaintext = 0
   cipher = AES.new(key, AES.MODE_GCM, iv)
   try:
-    plaintext = cipher.decrypt_and_verify(ciphertext,mac)
+    plaintext = cipher.decrypt_and_verify(ciphertext, mac)
   except (ValueError, KeyError):
     print("Incorrect decryption")
   return plaintext
