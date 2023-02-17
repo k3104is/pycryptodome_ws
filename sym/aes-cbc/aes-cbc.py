@@ -21,11 +21,11 @@ def main():
   plaintext = aes_cbc_decrypt(key, iv, ciphertext)
 
   # result
-  print("data\t\t:" + data.hex())
-  print("key\t\t:" + key.hex())
-  print("iv\t\t:" + iv.hex())
-  print("encrypted\t:" + ciphertext.hex())
-  print("decrypted\t:" + plaintext.hex())
+  print("data       :" + data.hex())
+  print("key        :" + key.hex())
+  print("iv         :" + iv.hex())
+  print("encrypted  :" + ciphertext.hex())
+  print("decrypted  :" + plaintext.hex())
 
 # encrypt
 def aes_cbc_encrypt(key, iv, text):
