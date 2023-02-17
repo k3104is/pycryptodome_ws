@@ -1,4 +1,8 @@
 # https://pycryptodome.readthedocs.io/en/latest/src/cipher/classic.html#cbc-mode
+# https://nvlpubs.nist.gov/nistpubs/FIPS/NIST.FIPS.197.pdf
+# C.1 AES-128 (Nk=4, Nr=10)
+# https://www.rfc-editor.org/rfc/rfc3602
+# Case #2
 from Crypto.Cipher import AES
 
 VAR_PATH = "./var/"
@@ -13,29 +17,28 @@ def main():
     data = bytearray.fromhex(fd.read())
 
   # aes-cbc
-  ciphertext, mac = aes_cbc_encrypt(key,iv,data)
-  plaintext = aes_cbc_encrypt(key,iv,ciphertext,mac)
+  ciphertext = aes_cbc_encrypt(key, iv, data)
+  plaintext = aes_cbc_decrypt(key, iv, ciphertext)
 
   # result
   print("data\t\t:" + data.hex())
   print("key\t\t:" + key.hex())
   print("iv\t\t:" + iv.hex())
   print("encrypted\t:" + ciphertext.hex())
-  print("tag\t\t:" + mac.hex())
   print("decrypted\t:" + plaintext.hex())
 
 # encrypt
-def aes_cbc_encrypt(key,iv,text):
+def aes_cbc_encrypt(key, iv, text):
   cipher = AES.new(key, AES.MODE_CBC, iv)
-  ciphertext, mac = cipher.encrypt_and_digest(text)
-  return ciphertext, mac
+  ciphertext = cipher.encrypt(text)
+  return ciphertext
 
 # decrypt
-def aes_cbc_decrypt(key,iv,ciphertext,mac):
+def aes_cbc_decrypt(key, iv, ciphertext):
   plaintext = 0
   cipher = AES.new(key, AES.MODE_CBC, iv)
   try:
-    plaintext = cipher.decrypt_and_verify(ciphertext,mac)
+    plaintext = cipher.decrypt(ciphertext)
   except (ValueError, KeyError):
     print("Incorrect decryption")
   return plaintext
