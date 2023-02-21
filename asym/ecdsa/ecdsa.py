@@ -7,10 +7,13 @@ from Crypto.PublicKey import ECC
 from Crypto.Signature import DSS
 
 VAR_PATH = "./var/"
-Q = FFFFFFFF00000000FFFFFFFFFFFFFFFFBCE6FAADA7179E84F3B9CAC2FC632551
-X = C9AFA9D845BA75166B5C215767B1D6934E50C3DB36E89B127B8A622B120F6721
-UX = 60FED4BA255A9D31C961EB74C6356D68C049B8923B61FA6CE669622E60F29FB6
-UY = 7903FE1008B8BC99A41AE9E95628BC64F2F1B20C2D7E9F5177A3C294D4462299
+# Q = FFFFFFFF00000000FFFFFFFFFFFFFFFFBCE6FAADA7179E84F3B9CAC2FC632551
+X = 0xC9AFA9D845BA75166B5C215767B1D6934E50C3DB36E89B127B8A622B120F6721
+UX = 0x60FED4BA255A9D31C961EB74C6356D68C049B8923B61FA6CE669622E60F29FB6
+UY = 0x7903FE1008B8BC99A41AE9E95628BC64F2F1B20C2D7E9F5177A3C294D4462299
+k = 0xA6E3C57DD01ABE90086538398355DD4C3B17AA873382B0F24D6129493D8AAD60
+message = b'sample'
+
 def main():
 
   # read variables
@@ -21,19 +24,15 @@ def main():
 #     iv = bytearray.fromhex(fi.read())
 #     data = bytearray.fromhex(fd.read())
   # key = ECC.generate(curve='P-256')
-  key = ECC.EccKey(curve='P-256', point_x = UX, point_y = UY, d = Q, seed = 32)
+  ecckey = ECC.construct(curve='P-256', d = X, point_x = UX, point_y = UY)
+  # ecckey = ECC.EccKey(curve='P-256', pointQ.x = UX, pointQ.y = UY, d = X)
 
-  print(key)
-  # message = b'I give my permission to order #4355'
-  # key = ECC.import_key(open('privkey.der').read())
-  # key = ECC.import_key(key_org)
-  # h = SHA256.new(message)
-  # signer = DSS.new(key, 'fips-186-3')
-  # signature = signer.sign(h)
-  # print(signature)
-#   # aes-cbc
-#   ciphertext = aes_cbc_encrypt(key, iv, data)
-#   plaintext = aes_cbc_decrypt(key, iv, ciphertext)
+  print(ecckey)
+  h = SHA256.new(message)
+  print(h)
+  signer = DSS.new(ecckey, 'deterministic-rfc6979')
+  signature = signer.sign(h)
+  print(signature.hex())
 
 #   # result
 #   print("data       :" + data.hex())
