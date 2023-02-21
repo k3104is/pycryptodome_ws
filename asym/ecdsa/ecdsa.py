@@ -7,55 +7,32 @@ from Crypto.PublicKey import ECC
 from Crypto.Signature import DSS
 
 VAR_PATH = "./var/"
-# Q = FFFFFFFF00000000FFFFFFFFFFFFFFFFBCE6FAADA7179E84F3B9CAC2FC632551
-X = 0xC9AFA9D845BA75166B5C215767B1D6934E50C3DB36E89B127B8A622B120F6721
-UX = 0x60FED4BA255A9D31C961EB74C6356D68C049B8923B61FA6CE669622E60F29FB6
-UY = 0x7903FE1008B8BC99A41AE9E95628BC64F2F1B20C2D7E9F5177A3C294D4462299
-k = 0xA6E3C57DD01ABE90086538398355DD4C3B17AA873382B0F24D6129493D8AAD60
 message = b'sample'
 
 def main():
 
   # read variables
-  # with  open(VAR_PATH + "key.txt") as fk, \
-  #       open(VAR_PATH + "data.txt") as fd, \
-  #       open(VAR_PATH + "iv.txt") as fi:
-    # key_org = bytearray.fromhex(fk.read())
-#     iv = bytearray.fromhex(fi.read())
-#     data = bytearray.fromhex(fd.read())
-  # key = ECC.generate(curve='P-256')
-  ecckey = ECC.construct(curve='P-256', d = X, point_x = UX, point_y = UY)
-  # ecckey = ECC.EccKey(curve='P-256', pointQ.x = UX, pointQ.y = UY, d = X)
-
-  print(ecckey)
+  with  open(VAR_PATH + "x.txt") as fx, \
+        open(VAR_PATH + "ux.txt") as fux, \
+        open(VAR_PATH + "uy.txt") as fuy:
+    x = int("0x" + fx.read(), 16)
+    ux = int("0x" + fux.read(), 16)
+    uy = int("0x" + fuy.read(), 16)
+  
+  # build a ECC key
+  ecckey = ECC.construct(curve='P-256', d = x, point_x = ux, point_y = uy)
+  # create hash val from message
   h = SHA256.new(message)
-  print(h)
+  # create signature object
   signer = DSS.new(ecckey, 'deterministic-rfc6979')
+  # sign
   signature = signer.sign(h)
-  print(signature.hex())
-
-#   # result
-#   print("data       :" + data.hex())
-#   print("key        :" + key.hex())
-#   print("iv         :" + iv.hex())
-#   print("encrypted  :" + ciphertext.hex())
-#   print("decrypted  :" + plaintext.hex())
-
-# # encrypt
-# def aes_cbc_encrypt(key, iv, text):
-#   cipher = AES.new(key, AES.MODE_CBC, iv)
-#   ciphertext = cipher.encrypt(text)
-#   return ciphertext
-
-# # decrypt
-# def aes_cbc_decrypt(key, iv, ciphertext):
-#   plaintext = 0
-#   cipher = AES.new(key, AES.MODE_CBC, iv)
-#   try:
-#     plaintext = cipher.decrypt(ciphertext)
-#   except (ValueError, KeyError):
-#     print("Incorrect decryption")
-#   return plaintext
+  # result
+  print("x  :" + format(x, 'x'))
+  print("ux :" + format(ux, 'x'))
+  print("uy :" + format(uy, 'x'))
+  print("r  :" + signature.hex()[0:64])
+  print("s  :" + signature.hex()[64:128])
 
 if __name__ == '__main__':
   main()
